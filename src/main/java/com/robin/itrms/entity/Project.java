@@ -1,6 +1,8 @@
 package com.robin.itrms.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Project {
@@ -34,16 +37,18 @@ public class Project {
 	@JoinColumn(name="IdAdmin")
 	private Admin admin;
 	
+	
+	@OneToMany(mappedBy = "project")
+	private List<MemberProject> memberProjects = new ArrayList<MemberProject>();
+	
 	public Project() {
 		
 	}
-	public Project(String name, String description, String status, LocalDateTime createdAt,
-			LocalDateTime updatedAt, Admin admin) {
+	
+	public Project(String name, String description, String status, Admin admin) {
 		this.name = name;
 		this.description = description;
 		this.status = status;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
 		this.admin = admin;
 	}
 
@@ -78,8 +83,6 @@ public class Project {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
-	
 
 	public LocalDateTime getCreatedAt() {
 		return createdAt;

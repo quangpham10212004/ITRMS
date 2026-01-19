@@ -26,12 +26,12 @@ public class User {
 	private String phoneNumber;
 	@Column
 	private LocalDateTime dob;
-	private String role;
-	private String status;
+	private String role; // se tinh chinh lai thanh Enum
+	private String status; // cung se tinh chinh lai thanh Enum
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long id; // PK
 	
 	
 
