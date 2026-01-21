@@ -54,12 +54,15 @@ public class MemberProject {
 	public LocalDateTime getJoinAt() {
 		return joinAt;
 	}
+	
 	public void setJoinAt(LocalDateTime joinAt) {
 		this.joinAt = joinAt;
 	}
+	
 	public Member getMember() {
 		return member;
 	}
+	
 	public void setMember(Member member) {
 		this.member = member;
 	}
@@ -67,6 +70,7 @@ public class MemberProject {
 	public List<Task> getTask() {
 		return tasks;
 	}
+	
 	public void setTask(List<Task> task) {
 		this.tasks = task;
 	}
