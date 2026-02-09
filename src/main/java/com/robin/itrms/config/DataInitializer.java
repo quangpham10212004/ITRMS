@@ -2,6 +2,8 @@ package com.robin.itrms.config;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.validator.internal.util.logging.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +13,7 @@ import com.robin.itrms.repository.UserRepository;
 
 @Configuration
 public class DataInitializer {
+	private static final Logger log = org.slf4j.LoggerFactory.getLogger(DataInitializer.class);
 	@Bean
     CommandLineRunner initUser(UserRepository userRepo) {
         return args -> {
@@ -33,8 +36,9 @@ public class DataInitializer {
                     "ACTIVE"
                 );
 
-            userRepo.save(u1);
-            userRepo.save(u2);
+            log.info("Preloading:..."+userRepo.save(u1));;
+            log.info("Preloading:..."+userRepo.save(u2));;
+
         };
     }
 }

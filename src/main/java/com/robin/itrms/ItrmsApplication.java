@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ItrmsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ItrmsApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(ItrmsApplication.class, args);
+  }
 
 }
