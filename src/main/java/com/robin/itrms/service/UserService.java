@@ -1,8 +1,8 @@
 package com.robin.itrms.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,9 +16,12 @@ import com.robin.itrms.repository.UserRepository;
 public class UserService {
 
     private final UserRepository userRepo;
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserService(UserRepository userRepo) {
-    this.userRepo = userRepo;
+    public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
+        this.userRepo = userRepo;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserRepository getUserRepo() {
@@ -36,7 +39,8 @@ public class UserService {
     }
     //C
     public User createUser(User user) {
-      return this.getUserRepo().save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return this.getUserRepo().save(user);
     }
     //U
     public User updateUser(User newUser, long id) {
@@ -54,4 +58,5 @@ public class UserService {
     public void deleteUser(Long id) {
       this.getUserRepo().deleteById(id);
     }
+
 }

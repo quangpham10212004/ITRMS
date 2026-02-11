@@ -1,6 +1,7 @@
 package com.robin.itrms.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -11,9 +12,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
-@Table(name="userr")
+@Table(name="users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 	@Column(nullable = false, unique = true)
@@ -27,7 +29,8 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String phoneNumber;
 	@Column
-	private LocalDateTime dob;
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	private LocalDate dob;
 	private String role; // se tinh chinh lai thanh Enum
 	private String status; // cung se tinh chinh lai thanh Enum
 
@@ -37,7 +40,7 @@ public class User {
 	
 	
 
-	public User(String userName, String password, String email, String phoneNumber, LocalDateTime dob, String role,
+	public User(String userName, String password, String email, String phoneNumber, LocalDate dob, String role,
 			String status) {
 		super();
 		this.userName = userName;
@@ -86,11 +89,11 @@ public class User {
 	}
 
 	
-	public LocalDateTime getDob() {
+	public LocalDate getDob() {
 		return dob;
 	}
 
-	public void setDob(LocalDateTime dob) {
+	public void setDob(LocalDate dob) {
 		this.dob = dob;
 	}
 
