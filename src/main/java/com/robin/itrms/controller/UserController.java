@@ -29,7 +29,7 @@ public class UserController {
 	
 	
 	@GetMapping("")
-	public List<User> getAllUsers(){
+	public List<User> showAllUsers(){
 		return userService.getAllUsers();
 	}
 	
@@ -41,15 +41,15 @@ public class UserController {
 	// specification
 	
 	@GetMapping("/{id}")
-	public EntityModel<User> getUserById(@PathVariable Long id) {
+	public EntityModel<User> showSelectedUser(@PathVariable Long id) {
 		User user =  userService.getUserInfo(id);
     return EntityModel.of(
     		user, 
-    		linkTo(methodOn(UserController.class).getUserById(id)).withSelfRel(),
-    		linkTo(methodOn(UserController.class).getAllUsers()).withRel("all")); 
-    
+    		linkTo(methodOn(UserController.class).showSelectedUser(id)).withSelfRel(),
+    		linkTo(methodOn(UserController.class).showAllUsers()).withRel("all"));
+
 	}
-	
+
 	@PutMapping("/{id}")
 	public User changeUserEmailAndPassword(@RequestBody User newUser,@PathVariable Long id) {
 		User temp = userService.getUserInfo(id);

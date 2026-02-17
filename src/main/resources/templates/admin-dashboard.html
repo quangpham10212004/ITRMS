@@ -1,10 +1,71 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        .project-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .project-table th, .project-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .project-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <p>Hello Admin</p>
+
+    <div class="container">
+        <!-- Sidebar: User Profile (Reused) -->
+        <aside class="profile-sidebar">
+             <div class="names">
+                <span class="fullname" th:text="${user.userName}">Full Name</span> <!-- Changed to userName as per User entity -->
+                 <span class="username" th:text="${user.role}">Role</span>
+            </div>
+             <div class="bio">
+                <p th:text="${user.email}">Email</p>
+                <p th:text="${user.phoneNumber}">Phone</p>
+            </div>
+             <!-- Since this is the dashboard, no back button needed, maybe a logout or home link -->
+        </aside>
+
+        <!-- Main Content: Project List -->
+        <main class="main-content">
+            <h2>My Projects</h2>
+            
+            <table class="project-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="project : ${projects}">
+                        <td th:text="${project.id}">1</td>
+                        <td th:text="${project.name}">Project Name</td>
+                        <td th:text="${project.description}">Description</td>
+                        <td th:text="${project.status}">Status</td>
+                        <td th:text="${project.createdAt}">2023-01-01</td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(projects)}">
+                        <td colspan="5" style="text-align:center;">No projects found.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
 </body>
 </html>

@@ -20,7 +20,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         var authorities = authentication.getAuthorities();
         if(authorities.stream()
                 .anyMatch(a ->
-                        a.getAuthority().equals("ADMIN"))){
+                        a.getAuthority().equals("ROLE_ADMIN"))){
             response.sendRedirect("/admin/dashboard");
             return;
         }

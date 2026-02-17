@@ -5,6 +5,8 @@ import java.util.Optional;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,21 @@ public class UserService {
     public User getUserInfo(Long id) {
     return userRepo.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
+    }
+    public User getCurentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null; // Or throw exception
+        }
+        Object principal = authentication.getPrincipal();
+        String username;
+        if (principal instanceof org.springframework.security.core.userdetails.UserDetails) {
+            username = ((org.springframework.security.core.userdetails.UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        return userRepo.findByUserName(username)
+                .orElseThrow(() -> new UserNotFoundException(username)); // Appropriately handle not found
     }
     //R
     public List<User> getAllUsers(){
