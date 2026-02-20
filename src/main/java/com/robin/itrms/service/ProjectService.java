@@ -3,10 +3,13 @@ package com.robin.itrms.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.robin.itrms.config.SecurityConfig;
 import com.robin.itrms.entity.Admin;
 import com.robin.itrms.entity.User;
+import com.robin.itrms.entity.UserDTO;
 import org.hibernate.annotations.CurrentTimestamp;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import com.robin.itrms.entity.Project;
@@ -16,7 +19,8 @@ import com.robin.itrms.repository.ProjectRepository;
 public class ProjectService {
 	@Autowired
 	private ProjectRepository repo;
-	
+	@Autowired
+	private AdminService adminService;
 	// R
 	public List<Project> getAllProjects() {
 		return repo.findAll();
@@ -31,13 +35,13 @@ public class ProjectService {
 	}
 	// C
 	public Project createOne(Project project) {
-		Optional<Project> check  = repo.findById(project.getId());
-		if(!check.isPresent()) {
-			return repo.save(project);
-		}
-		else {
-			return null;
-		}
+		UserDTO currentUser = SecurityConfig.getPrincipal();
+		String adminName = currentUser.getUserName();
+		Admin admin = adminService.getAdminInfo(adminName);
+		project.setAdmin(admin);
+		project.setStatus("ACTIVE"); // Set default status to ACTIVE for new projects
+		return repo.save(project);
+
 	}
 	// U
 	public Project updateOne(Project project, Long id) {

@@ -3,46 +3,53 @@ package com.robin.itrms.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.robin.itrms.entity.Project;
 import com.robin.itrms.service.ProjectService;
 
 
-@RestController
+@Controller
 @RequestMapping("/projects")
 public class ProjectController {
-	@Autowired
-	private ProjectService projectService;
+	private final ProjectService projectService;
+	
 	public ProjectController(ProjectService projectService) {
 		this.projectService = projectService;
 	}
 	
 	@GetMapping("")
-	public List<Project> showAllProjects(){
-		return projectService.getAllProjects();
+	public String showAllProjects(Model model){
+		model.addAttribute("projects", projectService.getAllProjects());
+		return "all";
 	}
-	@PostMapping("")
-	public Project AddNewProject(@RequestBody Project project) {
-		return projectService.createOne(project);
+	@GetMapping("/create")
+	public String ShowCreateProjectForm(Model model){
+		model.addAttribute("project", new Project());
+		return "create-new-project";
+	}
+	@PostMapping("/create")
+	public String CreateNewProject(@ModelAttribute Project project, RedirectAttributes redirectAttributes) {
+		projectService.createOne(project);
+		redirectAttributes.addFlashAttribute("successMessage", "Project created successfully!");
+		return "redirect:/admin/dashboard";
+
 	}
 	
 	@GetMapping("/{id}")
-	public Project showSelectedProject(@PathVariable Long id) {
-		return projectService.getOneProject(id);
+	public String showSelectedProject(@PathVariable Long id, Model model) {
+		model.addAttribute("project" ,projectService.getOneProject(id));
+		return "project-detail";
 	}
 	
-	@DeleteMapping("/{id}")
-	public void DeleteProject(@PathVariable Long id) {
+	@PostMapping("/{id}/delete")
+	public String DeleteProject(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 		projectService.deleteOne(id);
+		redirectAttributes.addFlashAttribute("successMessage", "Project deleted successfully!");
+		return "redirect:/admin/dashboard";
 	}
 	
 	

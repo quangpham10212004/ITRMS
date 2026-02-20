@@ -16,9 +16,10 @@ import com.robin.itrms.repository.UserRepository;
 
 @Service
 public class UserService {
-
+	@Autowired
     private final UserRepository userRepo;
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+	private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {

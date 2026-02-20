@@ -17,11 +17,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/dashboard")
 public class AdminController {
-    
     private final UserService userService;
     private final ProjectService projectService;
 
-    @Autowired
     public AdminController(UserService userService, ProjectService projectService) {
         this.userService = userService;
         this.projectService = projectService;

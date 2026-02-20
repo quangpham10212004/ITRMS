@@ -103,5 +103,16 @@ public class Project {
 	public Admin getAdmin() {
 		return admin;
 	}
-	
+
+	public void setAdmin(Admin admin) {
+		this.admin = admin;
+	}
+
+	public List<MemberProject> getMemberProjects() {
+		return memberProjects;
+	}
+
+	public void setMemberProjects(List<MemberProject> memberProjects) {
+		this.memberProjects = memberProjects;
+	}
 }
