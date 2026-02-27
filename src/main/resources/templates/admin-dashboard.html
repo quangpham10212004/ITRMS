@@ -280,6 +280,9 @@
                         01/01/2023
                     </td>
                     <td class="actions-cell">
+                        <a th:href="@{/project-members/{id}/add(id=${project.id})}" class="btn-primary" style="font-size: 12px; padding: 6px 10px; margin-right: 5px;">
+                            Add Member
+                        </a>
                         <form th:action="@{/projects/{id}/delete(id=${project.id})}" method="post" style="display: inline;">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                             <button type="submit" class="btn-delete" 

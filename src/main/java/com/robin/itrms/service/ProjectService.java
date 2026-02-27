@@ -4,15 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.robin.itrms.config.SecurityConfig;
-import com.robin.itrms.entity.Admin;
-import com.robin.itrms.entity.User;
-import com.robin.itrms.entity.UserDTO;
-import org.hibernate.annotations.CurrentTimestamp;
+import com.robin.itrms.dto.UserDTO;
+import com.robin.itrms.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import com.robin.itrms.entity.Project;
 import com.robin.itrms.repository.ProjectRepository;
 
 @Service

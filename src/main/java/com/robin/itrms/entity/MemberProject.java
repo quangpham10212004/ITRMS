@@ -66,7 +66,23 @@ public class MemberProject {
 	public void setMember(Member member) {
 		this.member = member;
 	}
-	
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public List<Task> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
+
 	public List<Task> getTask() {
 		return tasks;
 	}

@@ -1,4 +1,8 @@
-package com.robin.itrms.entity;
+package com.robin.itrms.dto;
+
+import com.robin.itrms.entity.User;
+import org.springframework.context.annotation.Bean;
+
 
 public class UserDTO {
     private String userName, role, status;

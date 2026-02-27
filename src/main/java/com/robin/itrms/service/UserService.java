@@ -55,6 +55,9 @@ public class UserService {
       return this.getUserRepo().findAll();
 
     }
+    public List<User> getAllMembers(){
+        return this.getUserRepo().findByRole("MEMBER");
+    }
     //C
     public User createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));

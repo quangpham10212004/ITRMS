@@ -32,7 +32,10 @@ public class UserController {
 	public List<User> showAllUsers(){
 		return userService.getAllUsers();
 	}
-	
+	public List<User> ShowAllMembers(){
+		return userService.getAllMembers();
+	}
+
 	@PostMapping("")
 	public User createNewUser(@RequestBody User user) {
 		return userService.createUser(user);
