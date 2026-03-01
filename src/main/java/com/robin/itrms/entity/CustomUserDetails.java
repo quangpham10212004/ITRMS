@@ -4,6 +4,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.robin.itrms.eenum.RoleUser;
+
 import java.util.Collection;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class CustomUserDetails implements UserDetails {
     public String getUsername() {
         return user.getUserName();
     }
-    public String getUserRole() {
+    public RoleUser getUserRole() {
     	return user.getRole();
     }
     @Override

@@ -24,6 +24,6 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("/admin/dashboard");
             return;
         }
-        response.sendRedirect("/member/home");
+        response.sendRedirect("/member/dashboard");
     }
 }

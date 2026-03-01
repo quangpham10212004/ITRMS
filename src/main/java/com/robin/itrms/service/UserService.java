@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.robin.itrms.eenum.RoleUser;
 import com.robin.itrms.entity.User;
 import com.robin.itrms.exception.UserNotFoundException;
 import com.robin.itrms.repository.UserRepository;
@@ -17,15 +18,11 @@ import com.robin.itrms.repository.UserRepository;
 @Service
 public class UserService {
 	@Autowired
-    private final UserRepository userRepo;
+    private UserRepository userRepo;
     @Autowired
-	private final PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.passwordEncoder = passwordEncoder;
-    }
+    
 
     public UserRepository getUserRepo() {
     return userRepo;
@@ -46,6 +43,7 @@ public class UserService {
             username = ((org.springframework.security.core.userdetails.UserDetails) principal).getUsername();
         } else {
             username = principal.toString();
+  
         }
         return userRepo.findByUserName(username)
                 .orElseThrow(() -> new UserNotFoundException(username)); // Appropriately handle not found
@@ -56,7 +54,7 @@ public class UserService {
 
     }
     public List<User> getAllMembers(){
-        return this.getUserRepo().findByRole("MEMBER");
+        return this.getUserRepo().findByRole(RoleUser.MEMBER);
     }
     //C
     public User createUser(User user) {
@@ -69,7 +67,7 @@ public class UserService {
       return repo.findById(id)
               .map(user ->{
                   user.setEmail(newUser.getEmail());
-                  user.setPassword(newUser.getPassword());
+                  user.setPassword(passwordEncoder.encode(newUser.getPassword()));
                   return repo.save(user);
               })
               .orElseThrow(()-> new RuntimeException(String.format("Update user with id: %d failed", id)));

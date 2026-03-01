@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Tasks - ITRMS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+        body { background-color: #f4f6f9; color: #1e293b; padding: 40px; }
+        .container { max-width: 800px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #2563eb; text-decoration: none; font-size: 14px; }
+        .header { margin-bottom: 30px; }
+        .card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .task-item { border-left: 4px solid #3b82f6; padding: 15px; margin-bottom: 15px; background: #f8fafc; border-radius: 0 6px 6px 0; display: flex; justify-content: space-between; align-items: flex-start; }
+        .task-item.priority-HIGH { border-left-color: #ef4444; }
+        .task-item.priority-URGENT { border-left-color: #7c3aed; }
+        .task-title { font-weight: 600; margin-bottom: 5px; }
+        .task-meta { font-size: 12px; color: #64748b; }
+        .status-pill { font-size: 11px; padding: 2px 8px; border-radius: 10px; font-weight: 600; }
+        .status-TODO { background: #e2e8f0; color: #475569; }
+        .status-IN_PROGRESS { background: #dbeafe; color: #1e40af; }
+        .status-DONE { background: #dcfce7; color: #166534; }
+        .btn-update { font-size: 12px; color: #2563eb; background: none; border: 1px solid #2563eb; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/member/dashboard" class="back-link">← My Projects</a>
+    
+    <div class="header">
+        <h1 th:text="${assignment.project.name}">Project Name</h1>
+        <p th:text="${assignment.project.description}">Project description...</p>
+    </div>
+
+    <div class="card">
+        <h2 style="font-size: 18px; margin-bottom: 20px;">My Tasks</h2>
+        
+        <div th:each="task : ${assignment.tasks}" th:class="'task-item priority-' + ${task.priority}">
+            <div>
+                <div class="task-title" th:text="${task.title}">Task Title</div>
+                <p style="font-size: 14px; margin-bottom: 10px;" th:text="${task.description}">Task description...</p>
+                <div class="task-meta">
+                    <span th:text="'Priority: ' + ${task.priority}">Priority</span> | 
+                    <span th:text="'Due: ' + ${#temporals.format(task.dueDate, 'dd/MM/yyyy HH:mm')}">Due Date</span>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <div th:class="'status-pill status-' + ${task.taskStatus}" th:text="${task.taskStatus}" style="margin-bottom: 10px;">TODO</div>
+                <!-- Future enhancement: update task status -->
+                <button class="btn-update">Update Status</button>
+            </div>
+        </div>
+        
+        <div th:if="${#lists.isEmpty(assignment.tasks)}" style="text-align: center; padding: 30px; color: #94a3b8;">
+            No tasks assigned to you in this project.
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

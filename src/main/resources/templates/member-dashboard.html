@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member Dashboard - ITRMS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+        body { background-color: #f4f6f9; display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: linear-gradient(180deg, #1e293b, #0f172a); color: white; padding: 30px 20px; }
+        .profile-card { text-align: center; margin-bottom: 30px; }
+        .avatar { width: 80px; height: 80px; border-radius: 50%; background: #3b82f6; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center; font-size: 30px; font-weight: bold; }
+        .main-content { flex: 1; padding: 40px; }
+        .header { margin-bottom: 30px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .project-card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.2s; text-decoration: none; color: inherit; border: 1px solid transparent; }
+        .project-card:hover { transform: translateY(-5px); border-color: #3b82f6; }
+        .project-name { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #1e293b; }
+        .project-desc { font-size: 14px; color: #64748b; margin-bottom: 15px; height: 40px; overflow: hidden; }
+        .status-badge { font-size: 11px; padding: 3px 10px; border-radius: 12px; font-weight: 600; text-transform: uppercase; }
+        .status-ACTIVE { background: #dcfce7; color: #166534; }
+        .task-count { font-size: 13px; color: #3b82f6; font-weight: 500; }
+        .empty-state { text-align: center; padding: 50px; color: #94a3b8; grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="profile-card">
+        <div class="avatar" th:text="${#strings.substring(user.userName, 0, 1)}">M</div>
+        <h3 th:text="${user.userName}">Member Name</h3>
+        <p style="font-size: 14px; opacity: 0.7;" th:text="${user.role}">MEMBER</p>
+        <p style="font-size: 13px; opacity: 0.8; margin-top: 10px;" th:text="${user.email}">email@example.com</p>
+        
+        <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+            <a th:href="@{/login?logout}" style="background-color: #ef4444; color: white; display: block; width: 100%; padding: 10px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500;">Logout</a>
+        </div>
+    </div>
+</aside>
+
+<main class="main-content">
+    <div class="header">
+        <h1>My Projects</h1>
+        <p style="color: #64748b;">Projects you are currently working on</p>
+    </div>
+
+    <div class="card-grid">
+        <a th:each="assignment : ${assignments}" th:href="@{/member/projects/{id}(id=${assignment.id})}" class="project-card">
+            <div class="project-name" th:text="${assignment.project.name}">Project Name</div>
+            <div class="project-desc" th:text="${assignment.project.description}">Short description of the project...</div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span th:class="'status-badge status-' + ${assignment.project.status}" th:text="${assignment.project.status}">ACTIVE</span>
+                <span class="task-count" th:text="${#lists.size(assignment.tasks)} + ' Assigned Tasks'">3 Tasks</span>
+            </div>
+        </a>
+        
+        <div th:if="${#lists.isEmpty(assignments)}" class="empty-state">
+            <p>You haven't been assigned to any projects yet.</p>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.robin.itrms.eenum.RoleUser;
 import com.robin.itrms.entity.User;
 
 @Repository
@@ -15,5 +16,5 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	
 	public Optional<User> findByUserName(String userName);
 
-	public List<User> findByRole(String role);
+	public List<User> findByRole(RoleUser role);
 }

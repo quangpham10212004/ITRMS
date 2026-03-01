@@ -3,8 +3,13 @@ package com.robin.itrms.entity;
 import java.time.LocalDate;
 
 import com.robin.itrms.dto.UserDTO;
+import com.robin.itrms.eenum.RoleUser;
+import com.robin.itrms.eenum.UserStatus;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -15,7 +20,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="users")
-@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 	@Column(nullable = false, unique = true)
 	private String userName;
@@ -30,8 +34,10 @@ public class User {
 	@Column
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dob;
-	private String role; // se tinh chinh lai thanh Enum
-	private String status; // cung se tinh chinh lai thanh Enum
+	@Enumerated(EnumType.STRING)
+	private RoleUser role; // se tinh chinh lai thanh Enum
+	@Enumerated(EnumType.STRING)
+	private UserStatus status; // cung se tinh chinh lai thanh Enum
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,8 +45,8 @@ public class User {
 	
 	
 
-	public User(String userName, String password, String email, String phoneNumber, LocalDate dob, String role,
-			String status) {
+	public User(String userName, String password, String email, String phoneNumber, LocalDate dob, RoleUser role,
+			UserStatus status) {
 		super();
 		this.userName = userName;
 		this.password = password;
@@ -96,19 +102,19 @@ public class User {
 		this.dob = dob;
 	}
 
-	public String getRole() {
+	public RoleUser getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(RoleUser member) {
+		this.role = member;
 	}
 
-	public String getStatus() {
+	public UserStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(UserStatus status) {
 		this.status = status;
 	}
 

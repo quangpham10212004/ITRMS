@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Details - ITRMS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+        body { background-color: #f4f6f9; color: #1e293b; padding: 40px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .back-link { display: inline-block; margin-bottom: 20px; color: #2563eb; text-decoration: none; font-size: 14px; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
+        .project-info h1 { font-size: 28px; margin-bottom: 10px; }
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        .status-ACTIVE { background-color: #dcfce7; color: #166534; }
+        
+        .card { background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
+        .card-title { font-size: 18px; font-weight: 600; color: #334155; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+        th { color: #64748b; font-weight: 600; }
+        
+        .btn { padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: 0.2s; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .btn-danger { background-color: #fee2e2; color: #dc2626; }
+        .btn-danger:hover { background-color: #fecaca; }
+        
+        .empty-state { text-align: center; padding: 20px; color: #94a3b8; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/admin/dashboard" class="back-link">← Back to Dashboard</a>
+    
+    <div class="header">
+        <div class="project-info">
+            <h1 th:text="${project.name}">Project Name</h1>
+            <span th:class="'status-badge status-' + ${project.status}" th:text="${project.status}">ACTIVE</span>
+            <p style="margin-top: 15px; color: #64748b;" th:text="${project.description}">Project description goes here...</p>
+        </div>
+    </div>
+
+    <!-- Members Section -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Team Members</h2>
+            <a th:href="@{/project-members/{id}/add(id=${project.id})}" class="btn btn-primary">+ Add Member</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Joined At</th>
+                    <th style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="mp : ${project.memberProjects}">
+                    <td th:text="${mp.member.userName}">Member Name</td>
+                    <td th:text="${mp.member.email}">email@example.com</td>
+                    <td th:text="${#temporals.format(mp.joinAt, 'dd/MM/yyyy')}">01/01/2023</td>
+                    <td style="text-align: right;">
+                        <form th:action="@{/project-members/remove}" method="post" style="display: inline;">
+                            <input type="hidden" name="mpId" th:value="${mp.id}"/>
+                            <input type="hidden" name="projectId" th:value="${project.id}"/>
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Remove this member?')">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(project.memberProjects)}">
+                    <td colspan="4" class="empty-state">No members assigned to this project yet.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tasks Section -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Project Tasks</h2>
+            <a th:href="@{/tasks/create(projectId=${project.id})}" class="btn btn-primary">+ Create Task</a>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Assigned To</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- We need to collect all tasks from all MemberProjects -->
+                <th:block th:each="mp : ${project.memberProjects}">
+                    <tr th:each="task : ${mp.tasks}">
+                        <td th:text="${task.title}">Task Title</td>
+                        <td th:text="${mp.member.userName}">Assignee</td>
+                        <td th:text="${task.taskStatus}">Status</td>
+                        <td th:text="${task.priority}">High</td>
+                        <td th:text="${#temporals.format(task.dueDate, 'dd/MM/yyyy')}">01/01/2023</td>
+                    </tr>
+                </th:block>
+                <!-- Alternative: flat list if we add List<Task> to Project or handle in controller -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

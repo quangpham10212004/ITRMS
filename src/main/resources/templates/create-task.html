@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Task - ITRMS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Segoe UI", sans-serif; }
+        body { background-color: #f4f6f9; color: #1e293b; padding: 40px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { font-size: 24px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: 500; font-size: 14px; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; }
+        textarea { height: 100px; resize: vertical; }
+        .btn { width: 100%; padding: 12px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 15px; }
+        .btn-primary { background-color: #2563eb; color: white; }
+        .btn-primary:hover { background-color: #1d4ed8; }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #64748b; text-decoration: none; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 th:text="'Create Task for ' + ${project.name}">Create Task</h1>
+    
+    <form th:action="@{/tasks/create}" method="post" th:object="${task}">
+        <input type="hidden" name="projectId" th:value="${project.id}"/>
+        
+        <div class="form-group">
+            <label>Title</label>
+            <input type="text" th:field="*{title}" required placeholder="Task title"/>
+        </div>
+        
+        <div class="form-group">
+            <label>Description</label>
+            <textarea th:field="*{description}" placeholder="Task description"></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label>Priority</label>
+            <select th:field="*{priority}">
+                <option value="LOW">Low</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HIGH">High</option>
+                <option value="URGENT">Urgent</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Due Date</label>
+            <input type="datetime-local" th:field="*{dueDate}"/>
+        </div>
+        
+        <div class="form-group">
+            <label>Assign To Member</label>
+            <select name="mpId" required>
+                <option value="" disabled selected>Select a member</option>
+                <option th:each="mp : ${mps}" th:value="${mp.id}" th:text="${mp.member.userName}">Member Name</option>
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Create Task</button>
+    </form>
+    
+    <a th:href="@{/projects/{id}(id=${project.id})}" class="back-link">Cancel</a>
+</div>
+
+</body>
+</html>

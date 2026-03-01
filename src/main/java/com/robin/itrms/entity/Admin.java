@@ -13,4 +13,13 @@ public class Admin extends User{
 	}
 	@OneToMany(mappedBy = "admin")
 	private  List<Project> projects = new ArrayList<Project>();
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+	
 }

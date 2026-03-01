@@ -18,11 +18,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, CustomSuccessHandler customSuccessHandler)
+    public SecurityFilterChain filterChain(HttpSecurity http, CustomSuccessHandler  customSuccessHandler)
             throws Exception {
         http.authorizeHttpRequests(auth -> auth
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/register").permitAll()
+                        .requestMatchers("/register-admin").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/member/**").hasRole("MEMBER")
                         .anyRequest().authenticated()

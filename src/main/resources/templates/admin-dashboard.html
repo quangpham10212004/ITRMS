@@ -233,6 +233,10 @@
                 <p th:text="${user.email}">Email</p>
                 <p th:text="${user.phoneNumber}">Phone</p>
             </div>
+
+            <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                <a th:href="@{/login?logout}" class="btn-primary" style="background-color: #ef4444; display: block; width: 100%;">Logout</a>
+            </div>
         </div>
     </aside>
 
@@ -265,7 +269,9 @@
 
                 <tbody>
                 <tr th:each="project : ${projects}">
-                    <td th:text="${project.name}">Project Name</td>
+                    <td>
+                        <a th:href="@{/projects/{id}(id=${project.id})}" th:text="${project.name}" style="color: #2563eb; text-decoration: none; font-weight: 500;">Project Name</a>
+                    </td>
                     <td th:text="${project.description}">Description</td>
 
                     <td>

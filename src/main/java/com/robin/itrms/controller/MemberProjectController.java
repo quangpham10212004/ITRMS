@@ -46,4 +46,10 @@ public class MemberProjectController {
         service.AddMemberProject(memberId, projectId);
         return "redirect:/projects/" + projectId;
     }
+
+    @PostMapping("/remove")
+    public String RemoveMemberProject(@RequestParam Long mpId, @RequestParam Long projectId) {
+        service.RemoveMemberProject(mpId);
+        return "redirect:/projects/" + projectId;
+    }
 }

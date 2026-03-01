@@ -1,13 +1,16 @@
 package com.robin.itrms.dto;
 
+import com.robin.itrms.eenum.RoleUser;
+import com.robin.itrms.eenum.UserStatus;
 import com.robin.itrms.entity.User;
 import org.springframework.context.annotation.Bean;
 
 
 public class UserDTO {
-    private String userName, role, status;
+    private String userName;
     private Long id;
-
+    private RoleUser role;
+    private UserStatus status;
     public void loadFromEntity(User user){
         this.userName = user.getUserName();
         this.role = user.getRole();
@@ -31,19 +34,19 @@ public class UserDTO {
         this.userName = userName;
     }
 
-    public String getRole() {
+    public RoleUser getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(RoleUser role) {
         this.role = role;
     }
 
-    public String getStatus() {
+    public UserStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(UserStatus status) {
         this.status = status;
     }
 }
